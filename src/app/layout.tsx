@@ -5,7 +5,7 @@ import { Providers } from "@/components/providers/Providers";
 import { ScrollProgress } from "@/components/effects/Backdrop";
 import { Preloader } from "@/components/effects/Preloader";
 import "./globals.css";
-
+  
 const display = Space_Grotesk({ subsets: ["latin"], variable: "--font-display-face", display: "swap" });
 const body = Inter({ subsets: ["latin"], variable: "--font-body-face", display: "swap" });
 const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono-face", display: "swap" });
