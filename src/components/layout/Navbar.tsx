@@ -17,16 +17,29 @@ export function Navbar() {
 
   useScrollLock(open);
 
-  // Highlight the section currently in the middle of the viewport.
+  // Highlight the section currently in the middle of the viewport. The hero
+  // (#top) is observed too so nothing stays highlighted while it's on screen.
   useEffect(() => {
+    const visible = new Set<string>();
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) setActive(entry.target.id as SectionId);
+          if (entry.isIntersecting) visible.add(entry.target.id);
+          else visible.delete(entry.target.id);
         });
+
+        if (visible.has("top")) {
+          setActive(null);
+          return;
+        }
+        setActive(navigation.find(({ id }) => visible.has(id))?.id ?? null);
       },
       { rootMargin: "-45% 0px -50% 0px" },
     );
+
+    const hero = document.getElementById("top");
+    if (hero) observer.observe(hero);
     navigation.forEach(({ id }) => {
       const el = document.getElementById(id);
       if (el) observer.observe(el);
@@ -65,7 +78,7 @@ export function Navbar() {
           >
             <a href="#top" className="group cell flex items-center gap-3" aria-label={`${site.name} — back to top`}>
               <Logo className="text-[0.9375rem] text-fg" />
-              <span className="label hidden text-muted sm:inline">{site.version}</span>
+              <span className="label hidden text-muted sm:inline">{site.name}</span>
             </a>
 
             <div className="cell flex items-center gap-6 lg:gap-8">

@@ -70,6 +70,8 @@ export const site = {
   resume: {
     preview: "/portfolio/resume.jpg",
     pdf: "/portfolio/resume.pdf",
+    /** Filename used when the PDF is saved to disk. */
+    pdfName: "resume_krelian_quimson.pdf",
   },
   version: "v2026.1",
   availability: {
@@ -85,6 +87,8 @@ export const site = {
     timeZoneLabel: "GMT+8",
   },
   email: "krelianquimson@gmail.com",
+  /** Shown as plain text in the contact list — deliberately not a link. */
+  phone: "+639456682019",
   /** Used in the <title> and meta description. */
   seoDescription:
     "Portfolio of Krelian Quimson — full-stack web developer and agentic AI developer based in Alabang, Muntinlupa City, Philippines.",
@@ -94,12 +98,13 @@ export const site = {
 
 export const hero = {
   intro:
-    "I'm a full-stack developer from Alabang. Since 2024 I've shipped more than 15 web and mobile applications for small and local businesses — handling the planning, architecture, build and deployment myself.",
+    "I'm a full-stack developer who solves business problems by turning them into digital solutions. I deliver end-to-end solutions, managing the full development lifecycle from planning, designing, development, testing, and deployment.",
   /** Short facts shown in the strip under the headline. */
   facts: [
-    { label: "Focus", value: "Full-stack · MERN · Agentic AI" },
-    { label: "Freelance", value: "15+ builds since 2024" },
-    { label: "Education", value: "BSIT, NCST — 2027" },
+    { label: "Focus", value: "Full-stack Web Developer · Agentic Development" },
+    { label: "From", value: "Alabang, Muntinlupa City, Philippines" },
+    { label: "Education", value: "National College of Science & Technology" },
+    { label: "Age / Birthday", value: "21 yrs old · January 5, 2005" },
   ],
 } as const;
 
@@ -123,7 +128,7 @@ export const project1stBatch: Project = {
   title: "Development of a Web-Based Integrated Management Platform for Tattoo Services with Decision Support System, 3D Tattoo Customization, Smart Pricing System and Mobile Application in Cavite",
   description:
     "An all-in-one platform that connects tattoo artists and clients. Clients can book sessions online and preview tattoos on an editable 3D character model that fits their body type, or on their own uploaded photo. Artists get booking and business management, a built-in tattoo editor, design generator, stencil generator, website builder, social media post editor, inventory tracking, and smart pricing.",
-  tech: ["React", "Next.js", "Node.js", "PostgreSQL", "Tailwind CSS", "Express.js"],
+  tech: ["React", "Next.js", "Node.js", "MongoDB", "Tailwind CSS", "Express.js"],
   image: "/capstone/inksight.png",
   websiteLink : "https://inksight-tattoo.vercel.app/",
   images : [
@@ -507,21 +512,8 @@ The cashier can handle customer orders, generate receipts, and view transaction 
     },
 
 
-
     {
       id: 14,
-      title: "Cafe Kiosk Ordering System",
-      description: "A self-ordering kiosk system for café stores that allows customers to place orders before proceeding to the cashier. Orders automatically appear on the cashier’s screen, where they can update the order status in real time.",
-      tech: ["java", "swing", "mysql",],
-      image: "/projects/cafe.png",
-      information : `
-The self-ordering kiosk system for café stores streamlines the ordering process by allowing customers to browse the menu and place orders directly at a kiosk before proceeding to payment. Once an order is placed, it instantly appears on the cashier’s dashboard, where the staff can manage and update the order status in real time—marking them as Paid, Canceled, To Pick Up, or Completed. The system also features automatic ingredient tracking and stock control, preventing orders if necessary ingredients are unavailable. When an order is placed, the system deducts the corresponding ingredients from inventory automatically (e.g., ordering Black Coffee reduces quantities of coffee beans and sugar). Additionally, the admin has control over product management, enabling updates to product names and prices, and can easily replenish ingredient stock through the integrated restock system.
-      `
-    },
-
-
-    {
-      id: 15,
       title: "Canteen Reservasion System",
       description: "This food reservation system allows students to reserve meals in advance while enabling canteen staff to efficiently manage food items, stock, and reservation orders. Canteen staff can update the menu, monitor stock levels, accept or reject orders, and track pickup schedules. Students can create accounts, place orders, and track their order status, making the process more convenient and organized for both sides.",
       tech: ["php", "mysql", "bootstrap"],
@@ -535,6 +527,21 @@ Students, on the other hand, can register an account and browse available food i
       `
     },
 
+
+
+    {
+      id: 15,
+      title: "Cafe Kiosk Ordering System",
+      description: "A self-ordering kiosk system for café stores that allows customers to place orders before proceeding to the cashier. Orders automatically appear on the cashier’s screen, where they can update the order status in real time.",
+      tech: ["java", "swing", "mysql",],
+      image: "/projects/cafe.png",
+      information : `
+The self-ordering kiosk system for café stores streamlines the ordering process by allowing customers to browse the menu and place orders directly at a kiosk before proceeding to payment. Once an order is placed, it instantly appears on the cashier’s dashboard, where the staff can manage and update the order status in real time—marking them as Paid, Canceled, To Pick Up, or Completed. The system also features automatic ingredient tracking and stock control, preventing orders if necessary ingredients are unavailable. When an order is placed, the system deducts the corresponding ingredients from inventory automatically (e.g., ordering Black Coffee reduces quantities of coffee beans and sugar). Additionally, the admin has control over product management, enabling updates to product names and prices, and can easily replenish ingredient stock through the integrated restock system.
+      `
+    },
+
+
+    
 
 ];
 
@@ -580,10 +587,11 @@ export const stack: { group: string; items: StackItem[] }[] = [
     group: "AI & Tooling",
     items: [
       { label: "AI Agents" },
-      { label: "AI Integration" },
       { label: "MCP", icon: "mcp" },
       { label: "Claude Code", icon: "claude" },
-      { label: "Version Control", icon: "git" },
+      { label: "GitHub", icon: "github" },
+      { label: "VS Code", icon: "vscode" },
+      { label: "Postman", icon: "postman" },
     ],
   },
 ];
@@ -631,8 +639,13 @@ export const marquee = {
  */
 
 /** Sits directly under the section title. */
+export const experienceTitle = {
+  role: "Full-Stack Freelance Developer",
+  meta: ["2+ Years experience", "15+ Freelance projects built"],
+};
+
 export const experienceIntro =
-  "I've been freelancing since 2024 — 2+ years of hands-on experience as a full-stack developer, with more than 15 web and mobile apps shipped for clients. I take each project from start to finish: talking with the client, planning the app and database, building the front and back end, testing, then deploying and maintaining it. Because I work directly with clients, the technical decisions, the deadlines and the fixes are all on me, from the first call to the live release.";
+  "I started freelancing in 2024 as a full-stack developer, and since then I've shipped 15+ web and mobile apps for clients. I own projects end to end: discovery calls, architecture and database design, front-end and back-end development, testing, deployment, and ongoing maintenance.\n\nWorking directly with clients means I'm accountable for every technical decision, every deadline, and every fix, from the first conversation to the live release. That ownership has made me a developer who communicates clearly, makes pragmatic choices, and ships work that holds up in production.";
 
 export const experience: ExperienceItem[] = [
   {

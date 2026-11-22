@@ -71,8 +71,12 @@ export function ResumeModal({ onClose }: { onClose: () => void }) {
               >
                 <RollText>Open PDF</RollText> ↗
               </a>
-              <a href={site.resume.pdf} download className="group label hidden sm:inline-flex">
-                <RollText>Download</RollText> ↓
+              <a
+                href={site.resume.pdf}
+                download={site.resume.pdfName}
+                className="group label inline-flex items-center gap-2 bg-fg px-4 py-2.5 text-bg transition-opacity duration-300 hover:opacity-80"
+              >
+                <RollText>Download PDF</RollText> <span aria-hidden>↓</span>
               </a>
               <button ref={closeRef} type="button" className="group label" onClick={onClose} aria-label="Close résumé">
                 [ <RollText>Close</RollText> ✕ ]
@@ -91,12 +95,26 @@ export function ResumeModal({ onClose }: { onClose: () => void }) {
                 className="h-auto w-full"
               />
             </div>
-            <p className="label mx-auto mt-4 flex max-w-[860px] flex-wrap items-center justify-between gap-2 text-muted">
-              <span>PDF · 2 pages</span>
-              <a href={site.resume.pdf} download className="draw-line">
-                Download the PDF ↓
-              </a>
-            </p>
+            <div className="mx-auto mt-6 flex max-w-[860px] flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+              <p className="label text-muted">PDF · 2 pages</p>
+              <div className="flex flex-wrap items-center gap-3 sm:gap-5">
+                <a
+                  href={site.resume.pdf}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="label draw-line inline-flex items-center gap-2"
+                >
+                  Open in new tab ↗
+                </a>
+                <a
+                  href={site.resume.pdf}
+                  download
+                  className="label inline-flex items-center gap-2 bg-fg px-5 py-3 text-bg transition-opacity duration-300 hover:opacity-80"
+                >
+                  Download PDF <span aria-hidden>↓</span>
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </motion.div>

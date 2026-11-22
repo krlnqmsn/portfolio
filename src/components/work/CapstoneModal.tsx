@@ -103,7 +103,7 @@ export function CapstoneModal({
                 </p>
                 <h2
                   id="capstone-title"
-                  className="display text-[clamp(1.75rem,3.6vw,3.25rem)] leading-[1.0]"
+                  className="display text-[clamp(1.35rem,2.4vw,2.25rem)] leading-[1.02]"
                 >
                   <MaskLine delay={0.3} className="pb-[0.04em]">
                     {project.title}
@@ -147,7 +147,7 @@ export function CapstoneModal({
           {/* Features */}
           <section className="cell border-t border-line py-10 md:py-14">
             <div className="mb-5 flex items-baseline justify-between gap-4">
-              <h3 className="display text-[clamp(2.25rem,6vw,4.5rem)] uppercase leading-[0.92]">
+              <h3 className="display text-[clamp(1.25rem,2.2vw,1.75rem)] uppercase leading-none">
                 Features
               </h3>
               <p className="label text-muted">{pad(features.length)} built</p>
@@ -170,7 +170,7 @@ export function CapstoneModal({
           {/* Screens — every screenshot, no cropping of the set */}
           <section className="cell border-t border-line py-10 md:py-14">
             <div className="mb-5 flex items-baseline justify-between gap-4">
-              <h3 className="display text-[clamp(2.25rem,6vw,4.5rem)] uppercase leading-[0.92]">
+              <h3 className="display text-[clamp(1.25rem,2.2vw,1.75rem)] uppercase leading-none">
                 Screens
               </h3>
               <p className="label text-muted">{pad(screens.length)} total</p>

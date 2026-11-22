@@ -38,8 +38,8 @@ export function SectionHeader({
         <h2
           className={`display cell uppercase ${
             titleSize === "compact"
-              ? "pb-5 pt-3 text-[clamp(1.5rem,3.4vw,2.75rem)] md:pb-7"
-              : "pb-8 pt-4 text-[clamp(2.75rem,9vw,9rem)] md:pb-12"
+              ? "pb-6 pt-4 text-[clamp(2.25rem,5.5vw,4.5rem)] md:pb-8"
+              : "pb-8 pt-4 text-[clamp(3.25rem,9.5vw,9.5rem)] md:pb-12"
           }`}
         >
           <MaskLine className="pb-[0.04em]">{title}</MaskLine>

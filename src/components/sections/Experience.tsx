@@ -1,5 +1,5 @@
-import { experience, experienceIntro, experienceStats } from "@/data/portfolio";
-import { SectionHeader, CountUp } from "@/components/ui/Bits";
+import { experience, experienceIntro, experienceTitle } from "@/data/portfolio";
+import { SectionHeader } from "@/components/ui/Bits";
 import { Reveal } from "@/components/ui/Text";
 
 export function Experience() {
@@ -10,63 +10,70 @@ export function Experience() {
 
         <div className="cell grid gap-10 pb-10 md:pb-14 lg:grid-cols-12 lg:gap-12">
           <Reveal className="lg:col-span-7">
-            <p className="max-w-[68ch] text-base leading-relaxed text-muted md:text-lg">
-              {experienceIntro}
-            </p>
-          </Reveal>
-
-          <Reveal delay={0.1} className="lg:col-span-5">
-            <dl className="grid grid-cols-2 border-t border-line">
-              {experienceStats.map((stat, i) => (
-                <div
-                  key={stat.label}
-                  className={`flex flex-col gap-3 py-6 ${
-                    i === 0 ? "border-r border-line pr-4" : "pl-4"
-                  }`}
-                >
-                  <dd className="display order-1 text-[clamp(2.5rem,4.5vw,4rem)] leading-[0.85] tabular-nums">
-                    <CountUp value={stat.value} suffix={stat.suffix} />
-                  </dd>
-                  <dt className="label order-2 text-muted">{stat.label}</dt>
-                </div>
-              ))}
-            </dl>
-          </Reveal>
-        </div>
-
-        <ol className="grid border-t border-line md:grid-cols-2">
-          {experience.map((item, i) => {
-            const current = i === experience.length - 1;
-            const Icon = current ? AgenticIcon : ManualIcon;
-
-            return (
-              <Reveal
-                as="li"
-                key={item.period}
-                delay={i * 0.06}
-                className={`cell py-6 md:py-8 ${
-                  i === 0 ? "border-b border-line md:border-b-0 md:border-r" : ""
-                }`}
-              >
-                <div className="flex flex-nowrap items-baseline justify-between gap-2 md:gap-4">
-                  <h3 className="display whitespace-nowrap text-[clamp(1rem,2.4vw,2.25rem)] uppercase leading-[0.95]">
-                    {item.role}
-                  </h3>
-                  <span className="display flex shrink-0 items-center gap-1.5 whitespace-nowrap text-[clamp(0.75rem,1.8vw,1.6rem)] uppercase leading-[0.95] md:gap-2">
-                    <Icon className="size-3 shrink-0 md:size-4" />
-                    {item.period}
+            <div className="pb-6">
+              <h3 className="display text-[clamp(1.25rem,2.6vw,2.25rem)] uppercase leading-[0.95]">
+                {experienceTitle.role}
+              </h3>
+              <p className="display mt-2 flex flex-nowrap items-center gap-x-2 whitespace-nowrap text-[clamp(0.55rem,2.4vw,1.05rem)] uppercase leading-[1] tracking-[0.02em] md:gap-x-3">
+                {experienceTitle.meta.map((item, i) => (
+                  <span key={item} className="flex shrink-0 items-center gap-2 whitespace-nowrap md:gap-3">
+                    {i > 0 && (
+                      <span aria-hidden className="text-muted">
+                        ·
+                      </span>
+                    )}
+                    {item}
                   </span>
-                </div>
+                ))}
+              </p>
+            </div>
 
-                <p className="label mt-2 text-muted">{item.company}</p>
-
-                <p className="mt-4 max-w-[48ch] text-base leading-relaxed text-muted">
-                  {item.description}
+            <div className="max-w-[68ch] space-y-5">
+              {experienceIntro.split("\n\n").map((paragraph) => (
+                <p
+                  key={paragraph.slice(0, 24)}
+                  className="text-base leading-relaxed text-muted md:text-lg"
+                >
+                  {paragraph}
                 </p>
-              </Reveal>
-            );
-          })}
-        </ol>
+              ))}
+            </div>
+          </Reveal>
+
+          <div className="lg:col-span-5">
+            <ol className="grid gap-px border-t border-line">
+              {experience.map((item, i) => {
+                const current = i === experience.length - 1;
+                const Icon = current ? AgenticIcon : ManualIcon;
+
+                return (
+                  <Reveal
+                    as="li"
+                    key={item.period}
+                    delay={0.1 + i * 0.06}
+                    className="border-b border-line py-6"
+                  >
+                    <div className="flex flex-nowrap items-baseline justify-between gap-2 md:gap-4">
+                      <h3 className="display whitespace-nowrap text-[clamp(1rem,2.2vw,1.6rem)] uppercase leading-[0.95]">
+                        {item.role}
+                      </h3>
+                      <span className="display flex shrink-0 items-center gap-1.5 whitespace-nowrap text-[clamp(0.7rem,1.5vw,1.1rem)] uppercase leading-[0.95]">
+                        <Icon className="size-3 shrink-0 md:size-4" />
+                        {item.period}
+                      </span>
+                    </div>
+
+                    <p className="label mt-2 text-muted">{item.company}</p>
+
+                    <p className="mt-3 max-w-[46ch] text-base leading-relaxed text-muted">
+                      {item.description}
+                    </p>
+                  </Reveal>
+                );
+              })}
+            </ol>
+          </div>
+        </div>
       </div>
     </section>
   );

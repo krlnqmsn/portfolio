@@ -4,7 +4,7 @@ import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { hero, site } from "@/data/portfolio";
-import { EASE_EXPO } from "@/lib/site";
+import { EASE_EXPO, pad } from "@/lib/site";
 import { useIntro } from "@/components/providers/Providers";
 import { LiveTime, StatusDot } from "@/components/ui/Bits";
 import { MaskLine, RollText } from "@/components/ui/Text";
@@ -41,10 +41,15 @@ export function Hero() {
           </motion.div>
 
           {/* Name, intro and actions beside the portrait + résumé */}
-          <div className="cell grid flex-1 items-center gap-10 py-10 md:py-14 lg:grid-cols-12 lg:gap-12">
+          <div className="cell grid flex-1 items-center gap-10 py-10 md:py-16 lg:grid-cols-12 lg:gap-12">
             <div className="lg:col-span-7 xl:col-span-6">
-              <motion.p className="label text-muted" {...fade(0.6)}>
-                {site.role}
+              <motion.p
+                className="flex items-center gap-3"
+                {...fade(0.6)}
+              >
+                <span className="font-display text-[clamp(0.8rem,1.5vw,1.05rem)] font-medium uppercase leading-snug tracking-[0.12em] text-fg">
+                  {site.role}
+                </span>
               </motion.p>
 
               <h1 aria-label={site.name} className="display mt-4 text-[clamp(2.75rem,6vw,5.5rem)] uppercase leading-[0.9]">
@@ -62,23 +67,19 @@ export function Hero() {
                 {hero.intro}
               </motion.p>
 
-              <motion.div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3" {...fade(0.85)}>
+              <motion.div className="mt-8 flex flex-nowrap items-stretch gap-3 md:gap-x-5" {...fade(0.85)}>
                 <button
                   type="button"
                   onClick={() => setResumeOpen(true)}
-                  className="group label inline-flex items-center justify-center gap-2 bg-fg px-6 py-4 text-bg"
+                  className="group label inline-flex flex-1 items-center justify-center gap-1.5 whitespace-nowrap bg-fg px-4 py-3.5 text-bg md:flex-none md:gap-2 md:px-6 md:py-4"
                 >
                   <RollText>View résumé</RollText> <span aria-hidden>↗</span>
                 </button>
                 <a
-                  href={site.resume.pdf}
-                  download
-                  className="group label inline-flex items-center justify-center gap-2 border border-fg/30 px-6 py-4 transition-colors hover:border-fg"
+                  href="#contact"
+                  className="group label inline-flex flex-1 items-center justify-center gap-1.5 whitespace-nowrap border border-fg/30 px-4 py-3.5 transition-colors hover:border-fg md:flex-none md:gap-2 md:px-6 md:py-4"
                 >
-                  <RollText>Download PDF</RollText> <span aria-hidden>↓</span>
-                </a>
-                <a href="#contact" className="group label draw-line inline-flex items-center gap-2 py-4">
-                  <RollText>Get in touch</RollText> <span aria-hidden>→</span>
+                  <RollText>Contact</RollText> <span aria-hidden>→</span>
                 </a>
               </motion.div>
             </div>
@@ -88,8 +89,8 @@ export function Hero() {
               className="grid grid-cols-2 items-stretch gap-3 sm:gap-4 lg:col-span-5 xl:col-span-5 xl:col-start-8"
               {...fade(0.9)}
             >
-              <figure className="flex min-w-0 flex-col">
-                <div className="relative aspect-square w-full overflow-hidden border border-line bg-fg/5">
+              <figure className="flex min-w-0 flex-col sm:-translate-y-14 lg:-translate-y-18">
+                <div className="relative aspect-square w-full overflow-hidden rounded-lg border border-line bg-fg/5">
                   <Image
                     src={site.photo}
                     alt={`${site.name} — portrait`}
@@ -99,18 +100,14 @@ export function Hero() {
                     className="object-cover"
                   />
                 </div>
-                <figcaption className="label mt-3 text-muted">
-                  Alabang
-                  <br />
-                  Muntinlupa City
-                </figcaption>
               </figure>
 
               <button
                 type="button"
                 onClick={() => setResumeOpen(true)}
                 aria-haspopup="dialog"
-                className="group flex min-w-0 flex-col border border-line text-left transition-colors duration-500 hover:border-fg focus-visible:border-fg"
+                aria-label="View résumé (PDF, 2 pages)"
+                className="group relative flex min-w-0 flex-col overflow-hidden rounded-lg border border-line text-left transition-colors duration-500 hover:border-fg focus-visible:border-fg sm:translate-y-12 lg:translate-y-15"
               >
                 <div className="relative min-h-[9rem] flex-1 overflow-hidden bg-fg/5">
                   <Image
@@ -121,28 +118,35 @@ export function Hero() {
                     className="object-cover object-top opacity-90 transition-transform duration-700 ease-expo group-hover:scale-[1.03]"
                   />
                 </div>
-                <span className="flex items-end justify-between gap-2 border-t border-line py-3 pl-3 pr-4">
-                  <span>
-                    <span className="label block text-muted">Résumé</span>
-                    <span className="label block">PDF · 2 pages</span>
-                  </span>
-                  <span aria-hidden className="text-lg leading-none transition-transform duration-500 ease-expo group-hover:-translate-y-0.5 group-hover:translate-x-0.5">
-                    ↗
-                  </span>
-                </span>
               </button>
             </motion.div>
           </div>
 
           {/* Quick facts */}
-          <motion.dl className="grid border-t border-line sm:grid-cols-3" {...fade(0.95)}>
-            {hero.facts.map((fact) => (
+          <motion.dl className="grid border-t border-line sm:grid-cols-2 lg:grid-cols-4" {...fade(0.95)}>
+            {hero.facts.map((fact, i) => (
               <div
                 key={fact.label}
-                className="cell flex flex-col gap-1 border-b border-line py-4 sm:border-b-0 sm:border-r sm:py-5 sm:last:border-r-0"
+                className="group cell relative flex flex-col gap-2 border-b border-line py-5 transition-colors duration-500 hover:bg-fg/[0.04] sm:border-r sm:py-6 sm:[&:nth-child(2n)]:border-r-0 sm:last:border-b-0 lg:border-b-0 lg:[&:nth-child(2n)]:border-r lg:[&:nth-child(4n)]:border-r-0"
               >
-                <dt className="label text-muted">{fact.label}</dt>
-                <dd className="text-sm leading-snug md:text-base">{fact.value}</dd>
+                <span
+                  aria-hidden
+                  className="absolute inset-x-0 top-0 h-px origin-left scale-x-0 bg-fg transition-transform duration-700 ease-expo group-hover:scale-x-100"
+                />
+
+                <div className="flex items-center justify-between gap-3">
+                  <dt className="label flex items-center gap-2 text-muted">
+                    <span aria-hidden className="inline-block size-1 shrink-0 rounded-full bg-fg/40 transition-colors duration-500 group-hover:bg-fg" />
+                    {fact.label}
+                  </dt>
+                  <span aria-hidden className="label tabular-nums text-muted/50">
+                    {pad(i + 1, 2)}
+                  </span>
+                </div>
+
+                <dd className="font-display text-[0.95rem] font-medium leading-snug tracking-[-0.01em] text-fg md:text-lg">
+                  {fact.value}
+                </dd>
               </div>
             ))}
           </motion.dl>

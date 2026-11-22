@@ -242,7 +242,7 @@ export function FeaturedProject({
 
       {/* Row 3 — stack, link, action */}
       <div className="cell flex flex-col gap-5 border-t border-line py-6 md:flex-row md:items-center md:justify-between md:gap-8">
-        <TechChips items={project.tech} />
+        <TechChips items={project.tech} size="lg" />
 
         <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-6">
           <button
