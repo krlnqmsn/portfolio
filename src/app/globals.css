@@ -1,0 +1,319 @@
+@import "tailwindcss";
+
+/* ── Design tokens ─────────────────────────────────────────── */
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+
+  --font-display: var(--font-display-face), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-body-face), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono-face), ui-monospace, "SFMono-Regular", monospace;
+
+  --tracking-display: -0.04em;
+  --tracking-label: 0.08em;
+
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-swift: cubic-bezier(0.7, 0, 0.2, 1);
+}
+
+:root,
+:root[data-theme="dark"] {
+  --bg: #0a0a0a;
+  --fg: #f5f5f0;
+  --muted: #888888;
+  --line: #1f1f1f;
+  --nav-h: 3.5rem;
+  color-scheme: dark;
+}
+
+:root[data-theme="light"] {
+  --bg: #f5f5f0;
+  --fg: #0a0a0a;
+  /* #888 fails WCAG AA on off-white, so light mode uses a deeper gray. */
+  --muted: #6e6e6e;
+  --line: #e5e5e0;
+  color-scheme: light;
+}
+
+/* ── Base ──────────────────────────────────────────────────── */
+
+@layer base {
+  html {
+    background: var(--bg);
+    color: var(--fg);
+    scroll-padding-top: var(--nav-h);
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    /* Hide the page scrollbar — scrolling still works. */
+    scrollbar-width: none;
+  }
+
+  html::-webkit-scrollbar {
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-sans);
+    overflow-x: clip;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background: var(--fg);
+    color: var(--bg);
+  }
+
+  :focus-visible {
+    outline: 1px solid var(--fg);
+    outline-offset: 3px;
+  }
+
+  button {
+    cursor: pointer;
+  }
+}
+
+/* ── Layout primitives ─────────────────────────────────────── */
+
+@layer components {
+  /* Outer frame — the vertical grid lines live on its inner edges. */
+  .frame {
+    width: 100%;
+    max-width: 1800px;
+    margin-inline: auto;
+    padding-inline: 0.75rem;
+  }
+
+  /* Horizontal padding for content sitting inside a grid column. */
+  .cell {
+    padding-inline: 0.75rem;
+  }
+
+  @media (min-width: 48rem) {
+    .frame {
+      padding-inline: 1.5rem;
+    }
+    .cell {
+      padding-inline: 1rem;
+    }
+  }
+
+  /* 4 / 8 / 12 column site grid, no gaps — aligned to the visible lines. */
+  .site-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  @media (min-width: 48rem) {
+    .site-grid {
+      grid-template-columns: repeat(8, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 64rem) {
+    .site-grid {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+    }
+  }
+
+  /* Monospace metadata label. */
+  .label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    line-height: 1.5;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    font-weight: 400;
+  }
+
+  /* Big tight display type. */
+  .display {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: var(--tracking-display);
+    line-height: 0.86;
+  }
+
+  /* Outlined text (used in the secondary marquee). */
+  .outline-text {
+    color: transparent;
+    -webkit-text-stroke: 1px var(--fg);
+  }
+
+  /* ── Hover: text that rolls up and swaps ── */
+  .roll {
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: top;
+  }
+  .roll > span {
+    display: block;
+    transition: transform 0.55s var(--ease-swift);
+  }
+  .roll > span + span {
+    position: absolute;
+    inset: 0;
+    transform: translateY(105%);
+  }
+  @media (hover: hover) {
+    .group:hover .roll > span:first-child,
+    .roll:hover > span:first-child {
+      transform: translateY(-105%);
+    }
+    .group:hover .roll > span + span,
+    .roll:hover > span + span {
+      transform: translateY(0);
+    }
+  }
+  .group:focus-visible .roll > span:first-child {
+    transform: translateY(-105%);
+  }
+  .group:focus-visible .roll > span + span {
+    transform: translateY(0);
+  }
+
+  /* ── Hover: underline draws in from the left, leaves to the right ── */
+  .draw-line {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-repeat: no-repeat;
+    background-position: 100% 100%;
+    background-size: 0% 1px;
+    transition: background-size 0.6s var(--ease-swift);
+  }
+  .group:hover .draw-line,
+  .group:focus-visible .draw-line,
+  a.draw-line:hover,
+  a.draw-line:focus-visible {
+    background-position: 0% 100%;
+    background-size: 100% 1px;
+  }
+
+  /* ── Endless auto-scroll for the featured feature list ── */
+  .features-track {
+    animation: features-scroll var(--features-duration, 60s) linear infinite;
+  }
+  .features-track:hover,
+  .features-track:focus-within {
+    animation-play-state: paused;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .features-track {
+      animation: none;
+    }
+  }
+
+  /* ── Soft light behind the hero ── */
+  .hero-glow {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse 55% 45% at 78% 30%, color-mix(in srgb, var(--fg) 7%, transparent), transparent 70%),
+      radial-gradient(ellipse 40% 35% at 10% 85%, color-mix(in srgb, var(--fg) 4%, transparent), transparent 70%);
+  }
+
+  /* ── Marquee ── */
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    animation: marquee var(--marquee-duration, 40s) linear infinite;
+    animation-direction: var(--marquee-direction, normal);
+  }
+
+  .blink {
+    animation: blink 1.2s steps(1) infinite;
+  }
+
+  .nudge {
+    animation: nudge 1.8s var(--ease-expo) infinite;
+  }
+}
+
+/* Intro already played this session / reduced motion: never paint it. */
+html[data-intro="skip"] .preloader {
+  display: none;
+}
+
+/* ── Theme switch ── */
+html.theme-fade,
+html.theme-fade *,
+html.theme-fade *::before,
+html.theme-fade *::after {
+  transition:
+    background-color 0.6s ease,
+    color 0.6s ease,
+    border-color 0.6s ease,
+    -webkit-text-stroke-color 0.6s ease !important;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-new(root) {
+  z-index: 2;
+}
+
+/* ── Keyframes ── */
+@keyframes marquee {
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes features-scroll {
+  to {
+    transform: translate3d(0, -50%, 0);
+  }
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes nudge {
+  0% {
+    transform: translateY(-60%);
+    opacity: 0;
+  }
+  40%,
+  60% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(60%);
+    opacity: 0;
+  }
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .marquee-track {
+    animation: none;
+  }
+}
