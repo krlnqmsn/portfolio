@@ -104,8 +104,15 @@ export function FeaturedProjects({
                         rel="noopener noreferrer"
                         className="inline-flex w-fit max-w-full items-center gap-2 font-sans text-base font-medium underline decoration-line decoration-1 underline-offset-4 transition-colors duration-300 hover:decoration-current"
                       >
+                        <svg
+                          aria-hidden
+                          viewBox="0 0 24 24"
+                          fill="currentColor"
+                          className="size-4 shrink-0"
+                        >
+                          <path d={iconPaths.link} />
+                        </svg>
                         <span className="truncate">{readable(website)}</span>
-                        <span aria-hidden>↗</span>
                         <span className="sr-only">(opens in a new tab)</span>
                       </a>
                     ) : null}

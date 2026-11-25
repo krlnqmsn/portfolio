@@ -11,21 +11,6 @@ import { GalleryLightbox } from "@/components/gallery/GalleryLightbox";
 
 const GAP = 8;
 
-/** Tracks a media query; used to drop the last frame from the mobile grid. */
-function useMediaQuery(query: string) {
-  const [matches, setMatches] = useState(false);
-
-  useEffect(() => {
-    const mql = window.matchMedia(query);
-    const update = () => setMatches(mql.matches);
-    update();
-    mql.addEventListener("change", update);
-    return () => mql.removeEventListener("change", update);
-  }, [query]);
-
-  return matches;
-}
-
 type Row = { items: GalleryImage[]; height: number; stretch: boolean };
 
 /**
@@ -72,15 +57,8 @@ export function Gallery() {
     return () => observer.disconnect();
   }, []);
 
-  const isMobile = useMediaQuery("(max-width: 767px)");
-  // The last frame is dropped on phones so every justified row stays full.
-  const images = useMemo(
-    () => (isMobile ? gallery.slice(0, -1) : gallery),
-    [isMobile],
-  );
-
   const target = width >= 1024 ? 180 : width >= 640 ? 155 : 110;
-  const rows = useMemo(() => buildRows(images, width, target), [images, width, target]);
+  const rows = useMemo(() => buildRows(gallery, width, target), [width, target]);
 
   return (
     <section id="gallery" className="relative">
@@ -106,7 +84,7 @@ export function Gallery() {
                     key={image.src}
                     type="button"
                     aria-haspopup="dialog"
-                    onClick={() => setOpenIndex(images.indexOf(image))}
+                    onClick={() => setOpenIndex(gallery.indexOf(image))}
                     style={style}
                     className="group relative min-w-0 cursor-zoom-in overflow-hidden bg-line"
                   >
